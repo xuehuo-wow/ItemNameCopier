@@ -17,7 +17,7 @@ local ShowItem
 -- 根框体
 -- ==================================
 local frame = CreateFrame("Frame", "ItemNameCopierFrame", UIParent, "BackdropTemplate")
-frame:SetSize(320, 32)
+frame:SetSize(280, 32)
 frame:SetBackdrop({
     bgFile = "Interface/Tooltips/UI-Tooltip-Background",
     edgeFile = "Interface/Tooltips/UI-Tooltip-Border",
@@ -93,14 +93,14 @@ end
 -- 收藏按钮
 -- ==================================
 local favBtn = CreateFrame("Button", nil, frame, "UIPanelButtonTemplate")
-favBtn:SetSize(50,20)
-favBtn:SetPoint("RIGHT", close, "LEFT", -4, 0)
+favBtn:SetSize(40,20)
+favBtn:SetPoint("RIGHT", close, "LEFT", -1, 0)
 favBtn:SetText("收藏")
 
 -- 历史按钮
 local historyBtn = CreateFrame("Button",nil,frame,"UIPanelButtonTemplate")
-historyBtn:SetSize(50,20)
-historyBtn:SetPoint("RIGHT",favBtn,"LEFT",-2,0)
+historyBtn:SetSize(40,20)
+historyBtn:SetPoint("RIGHT",favBtn,"LEFT",-1,0)
 historyBtn:SetText("历史")
 historyBtn:SetHitRectInsets(0, 0, 0, 0)
 historyBtn:SetFrameStrata("MEDIUM")
@@ -169,8 +169,8 @@ StaticPopupDialogs["ITEMCOPIER_RENAME_FAVLIST"] = {
 
 -- EditBox
 local editBox = CreateFrame("EditBox", nil, frame)
-editBox:SetPoint("LEFT", toggle, "RIGHT", 4, 0)
-editBox:SetPoint("RIGHT", historyBtn, "LEFT", -2, 0)
+editBox:SetPoint("LEFT", toggle, "RIGHT", 2, 0)
+editBox:SetPoint("RIGHT", historyBtn, "LEFT", -1, 0)
 editBox:SetHeight(20)
 editBox:SetFontObject("ChatFontNormal")
 editBox:SetAutoFocus(false)
