@@ -1,8 +1,8 @@
 ## Interface: 38000
 ## Title: ItemNameCopier
 ## Notes: Shift-Click item to copy name
-## Author: Lark
-## Version: 3.1
+## Author: 雪火
+## Version: 3.3
 
 ## SavedVariables: ItemNameCopierDB
 ItemNameCopier.lua

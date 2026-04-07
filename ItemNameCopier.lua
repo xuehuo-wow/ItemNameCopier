@@ -7,7 +7,7 @@ ItemNameCopierDB = ItemNameCopierDB or {}
 ItemNameCopierDB.history = ItemNameCopierDB.history or {}
 ItemNameCopierDB.favorites = ItemNameCopierDB.favorites or {}
 
-local ENABLED = true -- 默认ON
+local ENABLED = false -- 默认OFF
 local MAX_HISTORY = 20
 
 -- 前向声明：ShowFavoritesMenu 里的回调需要调用它
@@ -400,9 +400,10 @@ hooksecurefunc("HandleModifiedItemClick",function(link)
     if not link then return end
     if not (IsShiftKeyDown() or IsControlKeyDown()) then return end
 
-    -- 阻止链接文本被塞进拍卖行搜索框：把焦点从 BrowseName 移走
-    if AuctionFrame and AuctionFrame:IsShown() and BrowseName and BrowseName:IsVisible() then
-        BrowseName:ClearFocus()
+    if ENABLED then
+        if AuctionFrame and AuctionFrame:IsShown() and BrowseName and BrowseName:IsVisible() then
+            BrowseName:ClearFocus()
+        end
     end
 
     local name = link:match("%[(.-)%]")
@@ -466,7 +467,6 @@ local function HookChatEditBox()
         if editBox and not editBox.__ItemNameCopier_Hooked then
             editBox.__ItemNameCopier_Hooked = true
             
-            -- 保存原始的 OnEditFocusGained 脚本
             local origOnFocusGained = editBox:GetScript("OnEditFocusGained")
             editBox:SetScript("OnEditFocusGained", function(self)
                 ENABLED = false
@@ -474,11 +474,12 @@ local function HookChatEditBox()
                 if origOnFocusGained then origOnFocusGained(self) end
             end)
             
-            -- 保存原始的 OnEditFocusLost 脚本
             local origOnFocusLost = editBox:GetScript("OnEditFocusLost")
             editBox:SetScript("OnEditFocusLost", function(self)
-                ENABLED = true
-                UpdateToggle()
+                if AuctionFrame and AuctionFrame:IsShown() then
+                    ENABLED = true
+                    UpdateToggle()
+                end
                 if origOnFocusLost then origOnFocusLost(self) end
             end)
         end
@@ -490,13 +491,17 @@ end
 -- ==================================
 local evt = CreateFrame("Frame")
 evt:RegisterEvent("AUCTION_HOUSE_SHOW")
-evt:SetScript("OnEvent",function()
-    ENABLED = true
-    UpdateToggle()
-    frame:Show()
-
-    -- 拍卖行打开时安装拦截，防止 Shift/Ctrl 点击把链接塞进搜索框
-    HookAuctionSearchBoxInsert()
+evt:RegisterEvent("AUCTION_HOUSE_CLOSED")
+evt:SetScript("OnEvent",function(self, e)
+    if e == "AUCTION_HOUSE_SHOW" then
+        ENABLED = true
+        UpdateToggle()
+        frame:Show()
+        HookAuctionSearchBoxInsert()
+    elseif e == "AUCTION_HOUSE_CLOSED" then
+        ENABLED = false
+        UpdateToggle()
+    end
 end)
 
 -- ==================================
@@ -530,4 +535,4 @@ initFrame:SetScript("OnEvent", function()
     HookChatEditBox()
 end)
 
-print("|cff00ff00[ItemNameCopier] v3.2 - 聊天输入框打开时自动OFF|r")
+print("|cff00ff00[ItemNameCopier] v3.2 - 拍卖行界面打开时自动开启|r")
