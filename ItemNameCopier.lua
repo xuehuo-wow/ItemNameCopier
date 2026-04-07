@@ -1,11 +1,15 @@
 -- ==================================
--- ItemNameCopier v3.2 阻止搜索栏
+-- ItemNameCopier v3.4 优化界面和位置
 -- ==================================
 
 -- 数据库初始化
 ItemNameCopierDB = ItemNameCopierDB or {}
 ItemNameCopierDB.history = ItemNameCopierDB.history or {}
 ItemNameCopierDB.favorites = ItemNameCopierDB.favorites or {}
+ItemNameCopierDB.point = ItemNameCopierDB.point or "CENTER"
+ItemNameCopierDB.relPoint = ItemNameCopierDB.relPoint or "CENTER"
+ItemNameCopierDB.x = ItemNameCopierDB.x or 0
+ItemNameCopierDB.y = ItemNameCopierDB.y or 200
 
 local ENABLED = false -- 默认OFF
 local MAX_HISTORY = 20
@@ -29,16 +33,16 @@ frame:SetBackdrop({
 local function RestoreFramePosition()
     frame:ClearAllPoints()
     frame:SetPoint(
-        ItemNameCopierDB.point or "CENTER",
+        ItemNameCopierDB.point,
         UIParent,
-        ItemNameCopierDB.relPoint or "CENTER",
-        ItemNameCopierDB.x or 0,
-        ItemNameCopierDB.y or 680
+        ItemNameCopierDB.relPoint,
+        ItemNameCopierDB.x,
+        ItemNameCopierDB.y
     )
 end
 
 -- 先设置默认位置，稍后更新为存档位置
-frame:SetPoint("CENTER", UIParent, "CENTER", 0, 680)
+frame:SetPoint("CENTER", UIParent, "CENTER", 0, 200)
 
 frame:SetMovable(true)
 frame:EnableMouse(true)
@@ -535,4 +539,4 @@ initFrame:SetScript("OnEvent", function()
     HookChatEditBox()
 end)
 
-print("|cff00ff00[ItemNameCopier] v3.2 - 拍卖行界面打开时自动开启|r")
+print("|cff00ff00[ItemNameCopier] v3.4 - 优化界面和位置|r")

@@ -2,7 +2,7 @@
 ## Title: ItemNameCopier
 ## Notes: Shift-Click item to copy name
 ## Author: 雪火
-## Version: 3.3
+## Version: 3.4
 
 ## SavedVariables: ItemNameCopierDB
 ItemNameCopier.lua
